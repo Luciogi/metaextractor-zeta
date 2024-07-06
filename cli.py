@@ -17,6 +17,9 @@ def main():
 			metadata = extract_metadata_xlsx(file)
 		case "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
 			metadata = extract_metadata_docx(file)
+		case "application/vnd.openxmlformats-officedocument.presentationml.presentation":
+			metadata = extract_metadata_pptx(file)
+
 	if "video/" in file_type or "audio/" in file_type:
 		metadata = extract_metadata_media(file)
 

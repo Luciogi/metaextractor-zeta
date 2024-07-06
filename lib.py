@@ -4,6 +4,7 @@ import xml.etree.ElementTree as ET  # xml
 from PIL import Image, ExifTags
 from docx import Document
 from openpyxl import load_workbook
+from pptx import Presentation
 
 def extract_metadata_pdf(in_file) -> {}:
 	reader = PdfReader(in_file)
@@ -58,6 +59,27 @@ def extract_metadata_xlsx(in_file) -> {}:
 def extract_metadata_docx(in_file) -> {}:
 	document = Document(in_file)
 	properties = document.core_properties
+	metadata = {
+		'title': properties.title,
+		'subject': properties.subject,
+		'identifier': properties.identifier,
+		'language': properties.language,
+		'created': properties.created,
+		'modified': properties.modified,
+		'last_modified_by': properties.last_modified_by,
+		'category': properties.category,
+		'content_status': properties.content_status,
+		'version': properties.version,
+		'revision': properties.revision,
+		'keywords': properties.keywords,
+		'last_printed': properties.last_printed,
+		'comments': properties.comments
+	}
+	return metadata
+
+def extract_metadata_pptx(in_file) -> {}:
+	presentation = Presentation(in_file)
+	properties = presentation.core_properties
 	metadata = {
 		'title': properties.title,
 		'subject': properties.subject,
