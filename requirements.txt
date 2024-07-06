@@ -1,0 +1,6 @@
+openpyxl
+pillow
+pypdf
+python-magic
+python-ffmpeg
+python-docx
