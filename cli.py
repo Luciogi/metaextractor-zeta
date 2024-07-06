@@ -13,13 +13,6 @@ def main():
 			metadata = extract_metadata_pdf(file)
 		case "image/svg+xml":
 			metadata = extract_metadata_svg(file)
-		case "application/doc" | "application/ms-doc" | "application/msword" :
-			# TODO .doc
-			pass
-		case "application/vnd.ms-excel":
-			# TODO .xls
-			metadata = extract_metadata_xlsx(file)
-			pass
 		case "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet":
 			metadata = extract_metadata_xlsx(file)
 		case "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
