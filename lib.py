@@ -15,7 +15,7 @@ def extract_metadata_media(in_file) -> {}:
 	ffprobe.input(in_file, print_format="xml", show_streams=None)
 
 	metadata = ffprobe.execute()
-	metadata_string = media.decode() # Convert Bytes to String
+	metadata_string = metadata.decode() # Convert Bytes to String
 
 	tree = ET.fromstring(metadata_string) # Parse xml tree
 	root = tree[0][0] # Set root node i.e (ffprobe -> Streams -> Stream)
