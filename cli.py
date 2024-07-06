@@ -17,8 +17,9 @@ def main():
 			metadata = extract_metadata_xlsx(file)
 		case "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
 			metadata = extract_metadata_docx(file)
-		case other:
-			print("Unsupported file type", file_type)
+	if "video/" in file_type or "audio/" in file_type:
+		metadata = extract_metadata_media(file)
+
 	print_data(metadata)
 if __name__ == "__main__":
 	main()
