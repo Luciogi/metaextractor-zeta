@@ -77,6 +77,9 @@ def extract_metadata_docx(in_file) -> {}:
 	return metadata
 
 def print_data(dictionary) -> None:
+	if dictionary == None:
+		print("No metadata found!")
+		return
 	items = dictionary.items()
 	for k, v in items:
 		print(k, ":", v)
