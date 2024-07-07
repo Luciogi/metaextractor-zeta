@@ -5,6 +5,8 @@ from PIL import Image, ExifTags
 from docx import Document
 from openpyxl import load_workbook
 from pptx import Presentation
+import magic
+import datetime
 
 def extract_metadata_pdf(in_file) -> {}:
 	reader = PdfReader(in_file)
@@ -27,7 +29,13 @@ def extract_metadata_media(in_file) -> {}:
 def extract_metadata_raster_image(in_file) -> {}:
 	image = Image.open(in_file)
 	exif = image._getexif()
-	return exif
+	if exif:
+		exif = {
+			ExifTags.TAGS.get(k, k): v
+			for k, v in exif.items()
+		}
+	metadata = {k: v for k, v in exif.items() if v} if exif else {}
+	return metadata
 
 def extract_metadata_svg(in_file) -> {}:
 	tree = ET.parse(in_file)
@@ -106,3 +114,46 @@ def print_data(dictionary) -> None:
 	for k, v in items:
 		print(k, ":", v)
 
+def extract_metadata_file(file: str):
+	file_type = magic.from_file(file, mime=True)
+	metadata = {}
+
+	match file_type:
+		case "image/jpeg" | "image/png" | "image/tiff":
+			metadata = extract_metadata_raster_image(file)
+		case "application/pdf":
+			metadata = extract_metadata_pdf(file)
+		case "image/svg+xml":
+			metadata = extract_metadata_svg(file)
+		case "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet":
+			metadata = extract_metadata_xlsx(file)
+		case "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
+			metadata = extract_metadata_docx(file)
+		case "application/vnd.openxmlformats-officedocument.presentationml.presentation":
+			metadata = extract_metadata_pptx(file)
+		case _:
+			if "video/" in file_type or "audio/" in file_type:
+				metadata = extract_metadata_media(file)
+
+	metadata = add_meta_metadata(metadata, file)
+	return metadata
+
+def add_meta_metadata(metadata: dict, file: str) -> dict:
+	metadata['Meta-Metadata'] = {
+		'Metadata Creator': 'Zeta Data Extractor',
+		'Metadata Creation Date': datetime.datetime.now().isoformat(),
+		'Metadata Last Modified By': 'Zeta Data Extractor',
+		'Metadata Last Modified Date': datetime.datetime.now().isoformat(),
+		'Metadata Version': '1.0',
+		'Metadata Status': 'Complete',
+		'Metadata Standard': 'Custom',
+		'Metadata Language': 'en',
+		'Metadata Source': file,
+		'Metadata Accuracy': 'High',
+		'Metadata Completeness': 'Full',
+		'Metadata Coverage': 'All',
+		'Metadata Accessibility': 'Public',
+		'Metadata Rights': 'Open',
+		'Metadata Relationship': 'None'
+	}
+	return metadata
