@@ -4,28 +4,30 @@ import magic
 import os
 from fpdf import FPDF
 
+OUTPUT_DIR = "results"
+
 def print_help():
-	help_text = """Zeta Metadata Extractor - Extract metadata from various files
+	help_text = f"""Zeta Metadata Extractor - Extract metadata from various files
 Usage:
 	python cli.py <file>
 Note:
-	Results will be available in ./result
+	Results will be available in ./{OUTPUT_DIR}
 Options:
 	-h, --help		Show this help message and exit
 """
 	print(help_text)
 
 def create_result_folder():
-	if not os.path.exists('results'):
-		os.makedirs('results')
+	if not os.path.exists(OUTPUT_DIR):
+		os.makedirs(OUTPUT_DIR)
 
 def write_pdf(file_name, metadata):
 	base_name = os.path.basename(file_name)
-	result_file = f"results/{base_name}.pdf"
+	result_file = f"{OUTPUT_DIR}/{base_name}.pdf"
 	counter = 1
 
 	while os.path.exists(result_file):
-		result_file = f"results/{base_name}({counter}).pdf"
+		result_file = f"{OUTPUT_DIR}/{base_name}-{counter}.pdf"
 		counter += 1
 
 	pdf = FPDF()
