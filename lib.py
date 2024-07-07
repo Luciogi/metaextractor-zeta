@@ -8,12 +8,12 @@ from pptx import Presentation
 import magic
 import datetime
 
-def extract_metadata_pdf(in_file) -> {}:
+def extract_metadata_pdf(in_file) -> dict:
 	reader = PdfReader(in_file)
 	return reader.metadata
 
 # audio and video
-def extract_metadata_media(in_file) -> {}:
+def extract_metadata_media(in_file) -> dict:
 	ffprobe = FFmpeg(executable="ffprobe")
 	ffprobe.input(in_file, print_format="xml", show_streams=None)
 
@@ -26,7 +26,7 @@ def extract_metadata_media(in_file) -> {}:
 	return root.attrib
 
 # FIXME: return proper name instead of number as key
-def extract_metadata_raster_image(in_file) -> {}:
+def extract_metadata_raster_image(in_file) -> dict:
 	image = Image.open(in_file)
 	exif = image._getexif()
 	if exif:
@@ -37,12 +37,12 @@ def extract_metadata_raster_image(in_file) -> {}:
 	metadata = {k: v for k, v in exif.items() if v} if exif else {}
 	return metadata
 
-def extract_metadata_svg(in_file) -> {}:
+def extract_metadata_svg(in_file) -> dict:
 	tree = ET.parse(in_file)
 	root = tree.getroot()
 	return root.attrib
 
-def extract_metadata_xlsx(in_file) -> {}:
+def extract_metadata_xlsx(in_file) -> dict:
 	workbook = load_workbook(in_file)
 	properties = workbook.properties
 	metadata = {
@@ -64,7 +64,7 @@ def extract_metadata_xlsx(in_file) -> {}:
 	}
 	return metadata
 
-def extract_metadata_docx(in_file) -> {}:
+def extract_metadata_docx(in_file) -> dict:
 	document = Document(in_file)
 	properties = document.core_properties
 	metadata = {
@@ -85,7 +85,7 @@ def extract_metadata_docx(in_file) -> {}:
 	}
 	return metadata
 
-def extract_metadata_pptx(in_file) -> {}:
+def extract_metadata_pptx(in_file) -> dict:
 	presentation = Presentation(in_file)
 	properties = presentation.core_properties
 	metadata = {
@@ -134,8 +134,6 @@ def extract_metadata_file(file: str):
 		case _:
 			if "video/" in file_type or "audio/" in file_type:
 				metadata = extract_metadata_media(file)
-
-	metadata = add_meta_metadata(metadata, file)
 	return metadata
 
 def add_meta_metadata(metadata: dict, file: str) -> dict:

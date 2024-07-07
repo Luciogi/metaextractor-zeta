@@ -56,13 +56,17 @@ def main():
 
 	file = sys.argv[1]
 	file_type = magic.from_file(file, mime=True)
-	print(file_type)
+	print("File Type:",file_type)
 	metadata = extract_metadata_file(file)
 
 	print_data(metadata)
 
+	# Append meta-metadata
+	metadata = add_meta_metadata(metadata, file)
+
 	create_result_folder()
 	write_pdf(file, metadata)
+
 
 if __name__ == "__main__":
 	main()
