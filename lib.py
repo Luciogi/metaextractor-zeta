@@ -25,10 +25,17 @@ def extract_metadata_media(in_file) -> dict:
 	# 														Root--^
 	return root.attrib
 
-# FIXME: return proper name instead of number as key
 def extract_metadata_raster_image(in_file) -> dict:
 	image = Image.open(in_file)
 	exif = image._getexif()
+
+	# convert Degree to Decimal notation
+	GPS_INFO = 34853
+	gps_tag = exif[GPS_INFO]
+	N = gps_tag[2][0] + gps_tag[2][1]/60.0 + gps_tag[2][2]/3600.0
+	E = gps_tag[4][0] + gps_tag[4][1]/60.0 + gps_tag[4][2]/3600.0
+	exif[GPS_INFO] = f"{format(N, '.4f')} N, {format(E, '.4f')} E" # Overwrite
+
 	if exif:
 		exif = {
 			ExifTags.TAGS.get(k, k): v

@@ -69,6 +69,5 @@ def main():
 	create_result_folder()
 	write_pdf(file, metadata)
 
-
 if __name__ == "__main__":
 	main()
