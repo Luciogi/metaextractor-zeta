@@ -3,7 +3,6 @@ sys.path.append("lib")
 from lib import *
 from util import *
 
-OUTPUT_DIR = "results"
 
 def print_help():
 	help_text = f"""Zeta Metadata Extractor - Extract metadata from various files
