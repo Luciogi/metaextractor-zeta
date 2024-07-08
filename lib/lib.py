@@ -28,19 +28,22 @@ def extract_metadata_media(in_file) -> dict:
 def extract_metadata_raster_image(in_file) -> dict:
 	image = Image.open(in_file)
 	exif = image._getexif()
+	if exif == None:
+		return {}
 
-	# convert Degree to Decimal notation
-	GPS_INFO = 34853
-	gps_tag = exif[GPS_INFO]
-	N = gps_tag[2][0] + gps_tag[2][1]/60.0 + gps_tag[2][2]/3600.0
-	E = gps_tag[4][0] + gps_tag[4][1]/60.0 + gps_tag[4][2]/3600.0
-	exif[GPS_INFO] = f"{format(N, '.4f')} N, {format(E, '.4f')} E" # Overwrite
+	exif = {
+		ExifTags.TAGS[k]: v
+		for k, v in exif.items()
+		if k in ExifTags.TAGS
+	}
 
-	if exif:
-		exif = {
-			ExifTags.TAGS.get(k, k): v
-			for k, v in exif.items()
-		}
+	# Convert Degree notation to decimal
+	if "GPSInfo" in exif.keys():
+		gps_tag = exif["GPSInfo"]
+		N = gps_tag[2][0] + gps_tag[2][1]/60.0 + gps_tag[2][2]/3600.0
+		E = gps_tag[4][0] + gps_tag[4][1]/60.0 + gps_tag[4][2]/3600.0
+		exif["GPSInfo"] = f"{format(N, '.4f')} N, {format(E, '.4f')} E" # Overwrite
+
 	metadata = {k: v for k, v in exif.items() if v} if exif else {}
 	return metadata
 
@@ -126,7 +129,7 @@ def extract_metadata_file(file: str):
 	metadata = {}
 
 	match file_type:
-		case "image/jpeg" | "image/png" | "image/tiff":
+		case "image/jpeg" | "image/png":
 			metadata = extract_metadata_raster_image(file)
 		case "application/pdf":
 			metadata = extract_metadata_pdf(file)
