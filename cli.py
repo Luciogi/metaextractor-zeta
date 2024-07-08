@@ -15,9 +15,6 @@ Options:
 """
 	print(help_text)
 
-
-
-
 def main():
 	if len(sys.argv) < 2 or sys.argv[1] in ['-h', '--help']:
 		print_help()
