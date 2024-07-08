@@ -1,8 +1,9 @@
 import sys
-from lib import *
 import magic
 import os
 from fpdf import FPDF
+sys.path.append("lib")
+from lib import *
 
 OUTPUT_DIR = "results"
 
@@ -18,8 +19,7 @@ Options:
 	print(help_text)
 
 def create_result_folder():
-	if not os.path.exists(OUTPUT_DIR):
-		os.makedirs(OUTPUT_DIR)
+	os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 def write_pdf(file_name, metadata):
 	base_name = os.path.basename(file_name)
