@@ -1,5 +1,6 @@
 # This Python file uses the following encoding: utf-8
 import sys
+import os
 from PySide6 import QtWidgets, QtCore
 sys.path.append("lib")
 from lib import *
@@ -14,7 +15,6 @@ from ui_form import Ui_Widget
 
 class Widget(QtWidgets.QWidget):
     filesList = []
-    OUTPUT_DIR = "results"
 
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -30,7 +30,7 @@ class Widget(QtWidgets.QWidget):
         files= QtWidgets.QFileDialog.getOpenFileNames(
                                 self,
                                 "Select one or more files to open",
-                                "/home/oggy")
+                                os.path.expanduser("~"))
         self.filesList = list(files[0])
         self.addListWidgetItems()
 

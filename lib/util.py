@@ -1,19 +1,21 @@
 import os
 from fpdf import FPDF
 
+CURRENT_DIR = os.getcwd()
 OUTPUT_DIR = "results"
-
+global OUTPUT
+OUTPUT = os.path.join(CURRENT_DIR, OUTPUT_DIR)
 
 def create_result_folder():
-	os.makedirs(OUTPUT_DIR, exist_ok=True)
+	os.makedirs(OUTPUT, exist_ok=True)
 
 def write_pdf(file_name, metadata):
 	base_name = os.path.basename(file_name)
-	result_file = f"{OUTPUT_DIR}/{base_name}.pdf"
+	result_file = f"{OUTPUT}/{base_name}.pdf"
 	counter = 1
 
 	while os.path.exists(result_file):
-		result_file = f"{OUTPUT_DIR}/{base_name}-{counter}.pdf"
+		result_file = f"{OUTPUT}/{base_name}-{counter}.pdf"
 		counter += 1
 
 	pdf = FPDF()
