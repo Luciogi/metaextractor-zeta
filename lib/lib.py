@@ -7,6 +7,7 @@ from openpyxl import load_workbook
 from pptx import Presentation
 import magic
 import datetime
+import odfmeta as odf
 
 def extract_metadata_pdf(in_file) -> dict:
 	reader = PdfReader(in_file)
@@ -144,6 +145,8 @@ def extract_metadata_file(file: str):
 		case _:
 			if "video/" in file_type or "audio/" in file_type:
 				metadata = extract_metadata_media(file)
+			if "application/vnd.oasis.opendocument" in file_type:
+				metadata = extract_metadata_odf(file)
 	return metadata
 
 def add_meta_metadata(metadata: dict, file: str) -> dict:
@@ -165,3 +168,7 @@ def add_meta_metadata(metadata: dict, file: str) -> dict:
 		'Metadata Relationship': 'None'
 	}
 	return metadata
+
+def extract_metadata_odf(in_file):
+	odf_file = odf.OdfMeta(in_file)
+	return odf_file.Properties()
