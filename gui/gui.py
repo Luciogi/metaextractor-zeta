@@ -67,7 +67,7 @@ class Widget(QtWidgets.QWidget):
         messageBox = QtWidgets.QMessageBox(self)
         messageBox.setWindowTitle("Dialog")
         messageBox.setIcon(QtWidgets.QMessageBox.Information)
-        messageBox.setText("Sucessfully Extracted Metadata from files")
+        messageBox.setText("Successfully Extracted Metadata from files")
         messageBox.setInformativeText(f"Check ./{OUTPUT_DIR}/")
         messageBox.exec()
 
