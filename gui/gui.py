@@ -46,6 +46,7 @@ class Widget(QtWidgets.QWidget):
 
     def clearList(self):
         self.ui.listWidget.clear()
+        self.filesList.clear()
 
     def showFileMetadata(self):
         currentFile = self.ui.listWidget.currentItem().text()
