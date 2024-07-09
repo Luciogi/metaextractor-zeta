@@ -42,7 +42,7 @@ class Widget(QtWidgets.QWidget):
         currentRow = self.ui.listWidget.currentRow()
         self.ui.listWidget.takeItem(currentRow)
         if len(self.filesList):
-            self.filesList.pop(currentRow)  # Mannual poping item from List is required
+            self.filesList.pop(currentRow)  # Manual poping item from List is required
 
     def clearList(self):
         self.ui.listWidget.clear()
