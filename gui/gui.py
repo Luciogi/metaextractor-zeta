@@ -30,7 +30,7 @@ class Widget(QtWidgets.QWidget):
         files= QtWidgets.QFileDialog.getOpenFileNames(
                                 self,
                                 "Select one or more files to open",
-                                os.path.expanduser("~"))
+                                QtCore.QDir.homePath())
         self.filesList = list(files[0])
         self.addListWidgetItems()
 
