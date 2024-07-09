@@ -27,22 +27,24 @@ class Widget(QtWidgets.QWidget):
         self.ui.listWidget.itemDoubleClicked.connect(self.showFileMetadata)
 
     def openFileDialog(self):
-        files= QtWidgets.QFileDialog.getOpenFileNames(
+        files = QtWidgets.QFileDialog.getOpenFileNames(
                                 self,
                                 "Select one or more files to open",
                                 QtCore.QDir.homePath())
-        self.filesList = list(files[0])
-        self.addListWidgetItems()
+        new_files = list(files[0])
+        self.filesList.extend(new_files)
+        self.addListWidgetItems(new_files)
 
     # load files into listWidget
-    def addListWidgetItems(self):
-        self.ui.listWidget.addItems(self.filesList)
+    def addListWidgetItems(self, files):
+        self.ui.listWidget.addItems(files)
 
     def removeListWidgetItem(self):
         currentRow = self.ui.listWidget.currentRow()
-        self.ui.listWidget.takeItem(currentRow)
         if len(self.filesList):
-            self.filesList.pop(currentRow)  # Manual poping item from List is required
+            self.filesList.pop(currentRow)  # Manual removing item from List is required
+
+        self.ui.listWidget.takeItem(currentRow)
 
     def clearList(self):
         self.ui.listWidget.clear()
