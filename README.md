@@ -2,6 +2,9 @@
 
 Zeta Data Extractor is a tool designed to gather hidden information from documents and images, providing insights into the target by extracting metadata. This tool supports various file types and extracts comprehensive metadata attributes and meta-metadata attributes.
 
+### Screenshot
+![screenshot of gui](./assets/screenshot.png)
+
 ### Features
 
 - **Supports Various File Types**: Extract metadata from PDFs, DOCX files, images (JPEG, PNG), and more.
